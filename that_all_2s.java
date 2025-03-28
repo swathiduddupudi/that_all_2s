@@ -7,7 +7,7 @@ import java.nio.file.*;
 public class Main {
 
     // List of words to excluded from analysis
-    private static final Set<String> exclusions = new HashSet<>(Arrays.asList(
+    private static final Set<String> exclude = new HashSet<>(Arrays.asList(
             "in", "on", "at", "by", "for", "with", "about", "as", "of", "to", "and", "but", "or", "nor", "so", "the", "a", "an", 
             "he", "she", "it", "they", "we", "you", "is", "was", "were", "are", "be", "been", "being", "has", "have", "had", 
             "having", "does", "do", "did", "doing"
@@ -20,7 +20,7 @@ public class Main {
 
 
             // Use a map to store the word counts
-            Map<String, Integer> wordCountMap = new HashMap<>();
+            Map<String, Integer> wordCount = new HashMap<>();
             Set<String> uniqueWords = new TreeSet<>();
 
             // Read the file and process it
@@ -41,8 +41,8 @@ public class Main {
                         }
 
                         // Ignore excluded words
-                        if (!exclusions.contains(word)) {
-                            wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+                        if (!exclude.contains(word)) {
+                            wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
                             uniqueWords.add(word);
                         }
                     }
@@ -53,10 +53,10 @@ public class Main {
             }
 
             // Calculate total valid word count
-            int totalValidWords = wordCountMap.values().stream().mapToInt(Integer::intValue).sum();
+            int totalValidWords = wordCount.values().stream().mapToInt(Integer::intValue).sum();
 
             // Find top 5 most frequent words
-            List<Map.Entry<String, Integer>> topWords = new ArrayList<>(wordCountMap.entrySet());
+            List<Map.Entry<String, Integer>> topWords = new ArrayList<>(wordCount.entrySet());
             topWords.sort((a, b) -> b.getValue().compareTo(a.getValue())); // Sort by frequency
             topWords = topWords.subList(0, Math.min(5, topWords.size()));
 
